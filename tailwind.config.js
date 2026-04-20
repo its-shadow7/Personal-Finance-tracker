@@ -21,14 +21,13 @@ export default {
         'chart-4': '#ECA868', // Utilities (Light Orange)
         'chart-5': '#668BBC', // Others (Blue)
         theme: {
-          'bg-main': '#FFFFFF',
-          'bg-card': '#0C1D2D',
-          'primary-accent': '#1F8D69',
-          'secondary-accent': '#FF6D5F',
-          'text-main': '#FFFFFF',
-          'text-dark': '#0C1D2D',
-          'text-muted': '#A6ABB9',
-          border: '#E6E9F0',
+          'bg-sidebar': '#E8D4C0',      // Warm beige for sidebar
+          'bg-main': '#F7EAE1',         // Lighter warm beige for main app bg
+          'bg-card': '#FFFFFF',         // Pure White for cards/panels
+          'primary-btn': '#C48668',     // Warm tan/brown for buttons
+          'text-main': '#111827',       // Dark grey/black for primary text
+          'text-muted': '#6B7280',      // Muted grey for secondary text
+          'border': '#E5E7EB',          // Light grey for subtle borders
         }
       },
       fontFamily: {

@@ -6,7 +6,9 @@
 
 @layer base {
   body {
-    @apply bg-background text-text-main font-body antialiased;
+    @apply font-body antialiased;
+    background-color: #F7EAE1 !important;
+    color: #111827 !important;
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading tracking-tight;

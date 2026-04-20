@@ -12,8 +12,8 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside className="w-64 bg-theme-bg-card border-r border-theme-border/20 h-screen flex flex-col fixed left-0 top-0 z-30">
-      <div className="h-16 flex items-center px-6 border-b border-theme-border/20">
+    <aside className="w-64 bg-theme-bg-sidebar border-r border-theme-border flex flex-col h-screen fixed left-0 top-0 z-30">
+      <div className="h-16 flex items-center px-6 border-b border-theme-border">
         <div className="font-heading font-bold text-lg text-theme-text-main tracking-tight italic">AdvancedFin</div>
       </div>
       <nav className="flex-1 p-4 space-y-2">
@@ -24,8 +24,8 @@ export default function Sidebar() {
             className={({ isActive }) => 
               `flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 ${
                 isActive 
-                  ? 'bg-theme-primary-accent text-theme-text-main shadow-sm' 
-                  : 'text-theme-text-muted hover:bg-theme-bg-main/10 hover:text-theme-text-main'
+                  ? 'bg-theme-primary-btn text-white shadow-sm' 
+                  : 'text-theme-text-muted hover:bg-theme-border/50 hover:text-theme-text-main'
               }`
             }
           >

@@ -105,23 +105,23 @@ export default function AddExpenseModal({ onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} className="fixed inset-0 bg-text-main/50 backdrop-blur-sm" />
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} className="fixed inset-0 bg-theme-text-main/20 backdrop-blur-sm" />
       
-      <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="bg-surface rounded-lg w-full max-w-2xl z-10 shadow-xl overflow-hidden flex flex-col max-h-[90vh]">
-        <div className="px-6 py-4 border-b border-border flex justify-between items-center bg-background">
-          <h2 className="text-lg font-heading font-semibold text-text-main">New Record</h2>
-          <button onClick={onClose} className="text-text-muted hover:text-text-main"><X size={20} /></button>
+      <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} className="bg-theme-bg-card rounded-2xl w-full max-w-2xl z-10 shadow-2xl overflow-hidden flex flex-col max-h-[90vh] border border-theme-border">
+        <div className="px-6 py-5 border-b border-theme-border flex justify-between items-center bg-theme-bg-main/30">
+          <h2 className="text-lg font-heading font-semibold text-theme-text-main">New Record</h2>
+          <button onClick={onClose} className="text-theme-text-muted hover:text-theme-text-main transition-colors"><X size={20} /></button>
         </div>
 
         <div className="flex-1 overflow-y-auto p-6 flex flex-col md:flex-row gap-8">
             <div className="md:w-1/3 flex flex-col gap-4">
-                <div className="text-sm font-medium text-text-muted uppercase tracking-wider">Smart Receipt</div>
-                <div {...getRootProps()} className={`border-2 border-dashed rounded-md flex flex-col items-center justify-center p-6 text-center cursor-pointer transition-colors flex-1 ${isDragActive ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50'}`}>
+                <div className="text-xs font-bold text-theme-text-muted uppercase tracking-widest">Smart Receipt</div>
+                <div {...getRootProps()} className={`border-2 border-dashed rounded-xl flex flex-col items-center justify-center p-6 text-center cursor-pointer transition-all flex-1 ${isDragActive ? 'border-theme-primary-btn bg-theme-primary-btn/5' : 'border-theme-border hover:border-theme-primary-btn/50 hover:bg-theme-bg-main/10'}`}>
                     <input {...getInputProps()} />
                     {isParsing ? (
-                        <div className="text-primary flex flex-col items-center"><RefreshCw className="animate-spin mb-2" size={24} /><span className="text-sm font-medium">Gemini Parsing...</span></div>
+                        <div className="text-theme-primary-btn flex flex-col items-center"><RefreshCw className="animate-spin mb-2" size={24} /><span className="text-sm font-medium">Gemini Parsing...</span></div>
                     ) : (
-                        <div className="text-text-muted flex flex-col items-center"><UploadCloud size={32} className="mb-2 opacity-50 text-primary" /><span className="text-sm font-medium">Drag PDF/IMG</span><span className="text-xs opacity-70 mt-1">Live Gemini Auto-Extract</span></div>
+                        <div className="text-theme-text-muted flex flex-col items-center"><UploadCloud size={32} className="mb-2 opacity-50 text-theme-primary-btn" /><span className="text-sm font-medium">Drag PDF/IMG</span><span className="text-xs opacity-70 mt-1 uppercase font-bold tracking-tighter">Gemini Auto-Extract</span></div>
                     )}
                 </div>
             </div>
@@ -129,50 +129,50 @@ export default function AddExpenseModal({ onClose }) {
             <form onSubmit={handleSubmit(onSubmit)} className="md:w-2/3 space-y-4">
                <div className="grid grid-cols-2 gap-4">
                    <div>
-                       <label className="block text-xs font-medium text-text-muted mb-1">Type</label>
-                       <select {...register("type")} className="w-full text-sm border border-border rounded-md p-2 bg-surface outline-none focus:border-primary">
+                       <label className="block text-xs font-semibold text-theme-text-muted mb-1 uppercase tracking-tight">Type</label>
+                       <select {...register("type")} className="w-full text-sm border border-theme-border rounded-lg p-2.5 bg-theme-bg-main/10 outline-none focus:border-theme-primary-btn text-theme-text-main font-medium">
                            <option value="expense">Expense</option>
                            <option value="income">Income</option>
                        </select>
                    </div>
                    <div>
-                       <label className="block text-xs font-medium text-text-muted mb-1">Date</label>
-                       <input type="date" {...register("date")} className="w-full text-sm border border-border rounded-md p-2 bg-surface outline-none focus:border-primary" />
+                       <label className="block text-xs font-semibold text-theme-text-muted mb-1 uppercase tracking-tight">Date</label>
+                       <input type="date" {...register("date")} className="w-full text-sm border border-theme-border rounded-lg p-2.5 bg-theme-bg-main/10 outline-none focus:border-theme-primary-btn text-theme-text-main font-medium" />
                    </div>
                </div>
 
                <div>
-                   <label className="block text-xs font-medium text-text-muted mb-1">Amount</label>
+                   <label className="block text-xs font-semibold text-theme-text-muted mb-1 uppercase tracking-tight">Amount</label>
                    <div className="flex">
-                        <select {...register("currency")} className="text-sm border border-border rounded-l-md px-3 bg-background outline-none border-r-0 font-mono">
+                        <select {...register("currency")} className="text-sm border border-theme-border rounded-l-lg px-3 bg-theme-bg-main outline-none border-r-0 font-mono text-theme-text-main">
                             <option value={baseCurrency}>{baseCurrency}</option>
                             {rates && Object.keys(rates).filter(c => c !== baseCurrency).map(c => <option key={c} value={c}>{c}</option>)}
                         </select>
-                        <input type="number" step="0.01" {...register("amount")} placeholder="0.00" className="w-full text-sm border border-border rounded-r-md p-2 bg-surface outline-none focus:border-primary font-mono" />
+                        <input type="number" step="0.01" {...register("amount")} placeholder="0.00" className="w-full text-sm border border-theme-border rounded-r-lg p-2.5 bg-theme-bg-main/10 outline-none focus:border-theme-primary-btn font-mono text-theme-text-main" />
                    </div>
-                   {errors.amount && <span className="text-xs text-danger mt-1">{errors.amount.message}</span>}
+                   {errors.amount && <span className="text-xs text-red-500 font-bold mt-1">{errors.amount.message}</span>}
                </div>
 
                <div>
-                   <label className="block text-xs font-medium text-text-muted mb-1">Title / Merchant</label>
-                   <input type="text" {...register("title")} className="w-full text-sm border border-border rounded-md p-2 bg-surface outline-none focus:border-primary" />
-                   {errors.title && <span className="text-xs text-danger mt-1">{errors.title.message}</span>}
+                   <label className="block text-xs font-semibold text-theme-text-muted mb-1 uppercase tracking-tight">Title / Merchant</label>
+                   <input type="text" {...register("title")} className="w-full text-sm border border-theme-border rounded-lg p-2.5 bg-theme-bg-main/10 outline-none focus:border-theme-primary-btn text-theme-text-main font-medium" />
+                   {errors.title && <span className="text-xs text-red-500 font-bold mt-1">{errors.title.message}</span>}
                </div>
 
                <div>
-                   <label className="block text-xs font-medium text-text-muted mb-1">Category</label>
-                   <select {...register("category")} className="w-full text-sm border border-border rounded-md p-2 bg-surface outline-none focus:border-primary">
+                   <label className="block text-xs font-semibold text-theme-text-muted mb-1 uppercase tracking-tight">Category</label>
+                   <select {...register("category")} className="w-full text-sm border border-theme-border rounded-lg p-2.5 bg-theme-bg-main/10 outline-none focus:border-theme-primary-btn text-theme-text-main font-medium">
                        {categories.map(c => <option key={c} value={c}>{c}</option>)}
                    </select>
                </div>
                
                <div>
-                   <label className="block text-xs font-medium text-text-muted mb-1">Notes</label>
-                   <textarea {...register("notes")} className="w-full text-sm border border-border rounded-md p-2 bg-surface outline-none focus:border-primary h-20 resize-none"></textarea>
+                   <label className="block text-xs font-semibold text-theme-text-muted mb-1 uppercase tracking-tight">Notes</label>
+                   <textarea {...register("notes")} className="w-full text-sm border border-theme-border rounded-lg p-2.5 bg-theme-bg-main/10 outline-none focus:border-theme-primary-btn text-theme-text-main font-medium h-20 resize-none"></textarea>
                </div>
 
                <div className="pt-2">
-                   <button type="submit" className="w-full bg-primary text-surface py-2 rounded-md text-sm font-medium hover:bg-primary/90 transition-colors shadow-sm">
+                   <button type="submit" className="w-full bg-theme-primary-btn text-white py-3 rounded-xl text-sm font-bold hover:bg-theme-primary-btn/90 transition-all shadow-md active:scale-95">
                        Save Record
                    </button>
                </div>
