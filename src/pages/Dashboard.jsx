@@ -2,159 +2,112 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { useFinance } from '../context/FinanceContext';
 import { useCurrency } from '../context/CurrencyContext';
 import { isThisMonth, format } from 'date-fns';
-import { ArrowUpRight, ArrowDownRight, Activity, Sparkles } from 'lucide-react';
+import { ArrowUpRight, TrendingUp, Sparkles } from 'lucide-react';
 import MonthlyBarChart from '../components/charts/MonthlyBarChart';
 import CategoryPieChart from '../components/charts/CategoryPieChart';
-import { useAI } from '../context/AIContext';
 
 export default function Dashboard() {
   const { transactions } = useFinance();
   const { formatCurrency, convertCurrency, baseCurrency } = useCurrency();
-  const { callGeminiText, apiKey } = useAI();
-  const [aiSummary, setAiSummary] = useState('');
-  const [isGenerating, setIsGenerating] = useState(true);
 
-  const { totalIncome, totalExpense, netFlow } = useMemo(() => {
-    let income = 0; let expense = 0;
+  const { totalBalance, totalIncome, totalExpense } = useMemo(() => {
+    let balance = 0; let income = 0; let expense = 0;
     transactions.forEach(t => {
-      if (isThisMonth(t.date)) {
-        const normalizedAmount = convertCurrency(t.amount, t.currency, baseCurrency);
-        if (t.type === 'income') income += normalizedAmount;
-        else expense += normalizedAmount;
+      const normalizedAmount = convertCurrency(t.amount, t.currency, baseCurrency);
+      if (t.type === 'income') {
+          balance += normalizedAmount;
+          if (isThisMonth(t.date)) income += normalizedAmount;
+      }
+      else {
+          balance -= normalizedAmount;
+          if (isThisMonth(t.date)) expense += normalizedAmount;
       }
     });
-    return { totalIncome: income, totalExpense: expense, netFlow: income - expense };
+    return { totalBalance: balance, totalIncome: income, totalExpense: expense };
   }, [transactions, convertCurrency, baseCurrency]);
 
   const recentTx = useMemo(() => {
     return [...transactions].sort((a, b) => b.date - a.date).slice(0, 5);
   }, [transactions]);
 
-  useEffect(() => {
-    let active = true;
-    const fetchAISummary = async () => {
-        setIsGenerating(true);
-        if (!apiKey) {
-            if (active) setAiSummary("Live Gemini Insight requires an API Key. Please navigate to Settings to configure your secure local key.");
-            setIsGenerating(false);
-            return;
-        }
-
-        if (transactions.length === 0) {
-            if (active) setAiSummary("Gemini Insight: No transactions logged this month yet. Start tracking your expenses to receive an AI-powered financial overview and anomaly detection.");
-            setIsGenerating(false);
-            return;
-        }
-
-        try {
-            const relevantTx = transactions.slice(0, 30).map(t => ({ title: t.title, amount: t.amount, type: t.type, category: t.category, date: t.date }));
-            const prompt = `Here is the user's recent financial data: ${JSON.stringify(relevantTx)}. Provide a crisp, 2-3 sentence financial overview highlighting anomalies, total flow, and a brief recommendation. Address the user directly.`;
-            const system = "You are an expert financial advisor analyzing a user's expense tracker.";
-            
-            const responseText = await callGeminiText(system, prompt);
-            if (active) setAiSummary(responseText);
-        } catch (e) {
-            console.error(e);
-            if (!active) return;
-            if (e.response && e.response.status === 429) {
-                setAiSummary("Gemini API Rate Limit Exceeded (429). Free-tier applications process a limited number of requests. Please wait a moment for your quota to reset.");
-            } else {
-                setAiSummary("Gemini API Error. Please verify your API Key and Model String in Settings.");
-            }
-        } finally {
-            if (active) setIsGenerating(false);
-        }
-    };
-
-    fetchAISummary();
-    return () => { active = false; };
-  }, [transactions, apiKey]);
-
   return (
-    <div className="w-full flex flex-col gap-6">
-      <h1 className="text-2xl font-heading font-bold text-text-main mb-2">Dashboard</h1>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-surface rounded-xl border border-border p-6 flex flex-col justify-between shadow-soft">
-          <div className="text-text-muted text-sm font-medium mb-3 flex items-center gap-2">
-            <ArrowUpRight size={16} className="text-success" /> Monthly Income
-          </div>
-          <div className="text-3xl font-heading font-bold text-text-main">{formatCurrency(totalIncome)}</div>
-        </div>
-        <div className="bg-surface rounded-xl border border-border p-6 flex flex-col justify-between shadow-soft">
-          <div className="text-text-muted text-sm font-medium mb-3 flex items-center gap-2">
-            <ArrowDownRight size={16} className="text-danger" /> Monthly Expenses
-          </div>
-          <div className="text-3xl font-heading font-bold text-text-main">{formatCurrency(totalExpense)}</div>
-        </div>
-        <div className="bg-surface rounded-xl border border-border p-6 flex flex-col justify-between shadow-soft">
-          <div className="text-text-muted text-sm font-medium mb-3 flex items-center gap-2">
-            <Activity size={16} className={netFlow >= 0 ? "text-success" : "text-danger"} /> Net Cash Flow
-          </div>
-          <div className={`text-3xl font-heading font-bold ${netFlow >= 0 ? 'text-text-main' : 'text-danger'}`}>
-            {netFlow > 0 ? '+' : ''}{formatCurrency(netFlow)}
-          </div>
-        </div>
+    <div className="w-full flex flex-col gap-6 -mt-10">
+      <div className="flex justify-between items-center mb-2">
+        <h1 className="text-3xl font-heading font-semibold text-theme-text-main pt-10">Dashboard</h1>
       </div>
 
-      <div className="bg-sidebar border border-border rounded-xl p-6 relative overflow-hidden shadow-soft">
-         <div className="absolute top-0 right-0 p-4 opacity-10"><Sparkles size={64} className="text-primary" /></div>
-         <h3 className="font-heading font-bold text-text-main flex items-center gap-2 mb-2"><Sparkles size={18} className="text-primary" /> AI Financial Overview</h3>
-         {isGenerating ? (
-              <div className="text-sm text-text-muted animate-pulse">Gemini is analyzing your data...</div>
-         ) : (
-              <p className="text-sm text-text-main font-medium leading-relaxed max-w-4xl">{aiSummary}</p>
-         )}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-white rounded-xl shadow-sm p-6 flex flex-col justify-between border border-theme-border">
+          <div className="text-theme-text-main text-sm font-semibold mb-3 flex items-center justify-between">
+            Total Balance
+            <span className="flex items-center gap-1 bg-[#E1C2A5]/30 text-[#A6785D] px-2 py-0.5 rounded text-xs font-bold">
+               <TrendingUp size={12} strokeWidth={3} /> Trend
+            </span>
+          </div>
+          <div className="text-4xl font-heading font-bold text-theme-text-main tracking-tight">{formatCurrency(totalBalance)}</div>
+        </div>
+        <div className="bg-white rounded-xl shadow-sm p-6 flex flex-col justify-between border border-theme-border">
+          <div className="text-theme-text-main text-sm font-semibold mb-3">
+            Monthly Income
+          </div>
+          <div className="text-4xl font-heading font-bold text-theme-text-main tracking-tight">{formatCurrency(totalIncome)}</div>
+        </div>
+        <div className="bg-white rounded-xl shadow-sm p-6 flex flex-col justify-between border border-theme-border">
+          <div className="text-theme-text-main text-sm font-semibold mb-3">
+            Monthly Expenses
+          </div>
+          <div className="text-4xl font-heading font-bold text-theme-text-main tracking-tight">{formatCurrency(totalExpense)}</div>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-         <div className="bg-surface border border-border rounded-xl p-6 min-h-[300px] flex items-center justify-center flex-col shadow-soft">
-             <div className="text-text-main text-sm mb-4 font-semibold w-full text-left font-heading">Monthly In/Out</div>
+         <div className="bg-white border border-theme-border shadow-sm rounded-xl p-6 min-h-[300px] flex items-center justify-center flex-col">
+             <div className="text-theme-text-main text-base font-bold w-full text-left font-heading mb-2">Spending Trends</div>
              <div className="w-full h-56 mt-2">
                  <MonthlyBarChart />
              </div>
          </div>
-         <div className="bg-surface border border-border rounded-xl p-6 min-h-[300px] flex items-center justify-center flex-col shadow-soft">
-             <div className="text-text-main text-sm mb-4 font-semibold w-full text-left font-heading">Expense Categories</div>
+         <div className="bg-white border border-theme-border shadow-sm rounded-xl p-6 min-h-[300px] flex items-center justify-center flex-col">
+             <div className="text-theme-text-main text-base font-bold w-full text-left font-heading mb-2">Expense Categories</div>
              <div className="w-full h-56 mt-2">
                  <CategoryPieChart />
              </div>
          </div>
       </div>
 
-      <div className="bg-surface border border-border rounded-xl overflow-hidden shadow-soft mt-2">
-        <div className="px-6 py-5">
-          <h3 className="font-heading font-bold text-text-main">Recent Transactions</h3>
+      <div className="bg-white border border-theme-border rounded-xl overflow-hidden shadow-sm mt-2">
+        <div className="px-6 py-5 border-b border-theme-border">
+          <h3 className="font-heading font-bold text-lg text-theme-text-main">Recent Transactions</h3>
         </div>
         <div className="w-full overflow-x-auto">
           <table className="w-full text-sm text-left">
-            <thead className="bg-tableHeader text-text-main font-medium border-y border-border">
+            <thead className="bg-[#FAF2EC] text-theme-text-main font-semibold border-b border-theme-border">
               <tr>
-                <th className="px-6 py-3 font-medium">Date</th>
-                <th className="px-6 py-3 font-medium">Description</th>
-                <th className="px-6 py-3 font-medium">Category</th>
-                <th className="px-6 py-3 font-medium">Amount</th>
-                <th className="px-6 py-3 font-medium">Status</th>
+                <th className="px-6 py-3">Date</th>
+                <th className="px-6 py-3">Description</th>
+                <th className="px-6 py-3">Category</th>
+                <th className="px-6 py-3">Amount</th>
+                <th className="px-6 py-3">Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border">
+            <tbody className="divide-y divide-theme-border">
               {recentTx.map(t => (
-                <tr key={t.id} className="hover:bg-background/30 transition-colors">
-                  <td className="px-6 py-4 text-text-main">
+                <tr key={t.id} className="hover:bg-theme-bg/30 transition-colors">
+                  <td className="px-6 py-4 text-theme-text-main">
                     {format(t.date, 'MMM dd')}
                   </td>
-                  <td className="px-6 py-4 text-text-main font-medium">
+                  <td className="px-6 py-4 text-theme-text-main font-medium">
                     {t.title}
                   </td>
-                  <td className="px-6 py-4 text-text-muted">
+                  <td className="px-6 py-4 text-theme-text-main">
                     {t.category}
                   </td>
-                  <td className={`px-6 py-4 font-mono font-medium ${t.type === 'income' ? 'text-success' : 'text-text-main'}`}>
+                  <td className={`px-6 py-4 font-mono font-medium ${t.type === 'income' ? 'text-[#82A773]' : 'text-theme-text-main'}`}>
                     {t.type === 'expense' ? '-' : '+'}{formatCurrency(convertCurrency(t.amount, t.currency, baseCurrency))}
                   </td>
                   <td className="px-6 py-4">
-                    <div className="flex items-center gap-2 text-text-main">
-                      <span className={`w-2 h-2 rounded-full ${isThisMonth(t.date) ? 'bg-success' : 'bg-warning'}`}></span>
+                    <div className="flex items-center gap-2 text-theme-text-main font-medium">
+                      <span className={`w-2.5 h-2.5 rounded-full ${isThisMonth(t.date) ? 'bg-[#82A773]' : 'bg-[#ECA868]'}`}></span>
                       {isThisMonth(t.date) ? 'Completed' : 'Pending'}
                     </div>
                   </td>
@@ -162,7 +115,7 @@ export default function Dashboard() {
               ))}
               {recentTx.length === 0 && (
                 <tr>
-                  <td colSpan="5" className="p-8 text-center text-text-muted">
+                  <td colSpan="5" className="p-8 text-center text-theme-text-muted">
                     No recent transactions.
                   </td>
                 </tr>
