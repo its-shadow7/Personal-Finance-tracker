@@ -7,40 +7,40 @@ export default function Settings() {
 
   return (
     <div className="w-full flex flex-col gap-6 p-2 max-w-2xl">
-      <h1 className="text-2xl font-heading font-bold text-text-main mb-2">Settings & Integrations</h1>
+      <h1 className="text-2xl font-heading font-bold text-theme-text-dark pt-10 mb-2">Settings & Integrations</h1>
 
-      <div className="bg-surface border-2 border-primary/20 rounded-lg p-6 shadow-sm relative overflow-hidden">
-         <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none"><Sparkles size={120} /></div>
+      <div className="bg-theme-bg-card border border-theme-border/10 rounded-2xl p-6 shadow-md relative overflow-hidden text-theme-text-main">
+         <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none text-theme-primary-accent"><Sparkles size={120} /></div>
          
-         <h2 className="text-lg font-heading font-semibold text-primary mb-4 flex items-center gap-2">
+         <h2 className="text-lg font-heading font-semibold text-theme-primary-accent mb-4 flex items-center gap-2">
              <Key size={18} /> Gemini API Integration
          </h2>
-         <p className="text-sm text-text-muted mb-6 leading-relaxed">
+         <p className="text-sm text-theme-text-muted mb-6 leading-relaxed">
              This secure local dashboard requires a Google Gemini API Key to enable automated receipt scanning and personalized financial insights. Your key is stored strictly within your browser's local memory.
          </p>
          
          <div className="flex flex-col gap-4 relative z-10">
              <div>
-                 <label className="text-xs font-medium text-text-muted">Secret API Key</label>
+                 <label className="text-xs font-medium text-theme-text-muted">Secret API Key</label>
                  <input 
                      type="password" 
                      value={apiKey} 
                      onChange={e => setApiKey(e.target.value)} 
                      placeholder="AIzaSy..."
-                     className="w-full border border-primary/40 rounded-md p-3 text-sm outline-none focus:border-primary font-mono bg-background shadow-inner mt-1"
+                     className="w-full border border-theme-border/20 rounded-xl p-3 text-sm outline-none focus:border-theme-primary-accent font-mono bg-theme-bg-main/10 shadow-inner mt-1 text-theme-text-main"
                  />
-                 <div className="text-[10px] text-text-muted text-right mt-1">Saved automatically to localStorage.</div>
+                 <div className="text-[10px] text-theme-text-muted text-right mt-1">Saved automatically to localStorage.</div>
              </div>
              
              <div>
-                 <label className="text-xs font-medium text-text-muted flex items-center gap-1"><Cpu size={14}/> Target Model Selection</label>
+                 <label className="text-xs font-medium text-theme-text-muted flex items-center gap-1"><Cpu size={14}/> Target Model Selection</label>
                  <input 
                      type="text" 
                      list="gemini-models"
                      value={modelName} 
                      onChange={e => setModelName(e.target.value)} 
                      placeholder="gemini-2.5-flash"
-                     className="w-full border border-border rounded-md p-3 text-sm outline-none focus:border-primary font-mono bg-background mt-1"
+                     className="w-full border border-theme-border/20 rounded-xl p-3 text-sm outline-none focus:border-theme-primary-accent font-mono bg-theme-bg-main/10 mt-1 text-theme-text-main"
                  />
                  <datalist id="gemini-models">
                      <option value="gemini-2.5-flash" />
@@ -48,7 +48,7 @@ export default function Settings() {
                      <option value="gemini-2.0-flash" />
                      <option value="gemini-2.0-flash-001" />
                  </datalist>
-                 <div className="text-[10px] text-text-muted mt-1">Select from standard tiers or explicitly type your custom target.</div>
+                 <div className="text-[10px] text-theme-text-muted mt-1">Select from standard tiers or explicitly type your custom target.</div>
              </div>
          </div>
       </div>

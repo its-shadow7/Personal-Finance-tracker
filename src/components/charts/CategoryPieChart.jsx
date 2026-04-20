@@ -3,7 +3,14 @@ import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recha
 import { useFinance } from '../../context/FinanceContext';
 import { useCurrency } from '../../context/CurrencyContext';
 
-const COLORS = ['#4F46E5', '#3B82F6', '#F59E0B', '#10B981', '#8B5CF6', '#EC4899', '#EF4444', '#14B8A6'];
+const COLORS = [
+  '#1F8D69', // Primary Teal
+  '#FF6D5F', // Secondary Coral
+  'rgba(31, 141, 105, 0.8)',
+  'rgba(255, 109, 95, 0.8)',
+  'rgba(31, 141, 105, 0.5)',
+  'rgba(255, 109, 95, 0.5)',
+];
 
 export default function CategoryPieChart() {
   const { transactions } = useFinance();

@@ -21,13 +21,14 @@ export default {
         'chart-4': '#ECA868', // Utilities (Light Orange)
         'chart-5': '#668BBC', // Others (Blue)
         theme: {
-          bg: '#FAEEE4', // Very light peach background
-          sidebar: '#E1C2A5', // Warm tan sidebar
-          'sidebar-active': '#F2DBCA', // Lighter tan for active items
-          primary: '#B57758', // Terracotta button
-          'text-main': '#1A1817', // Nearly black
-          'text-muted': '#6B5A4E', // Warm gray/brown
-          border: '#E8D4C4', // Soft beige border
+          'bg-main': '#FFFFFF',
+          'bg-card': '#0C1D2D',
+          'primary-accent': '#1F8D69',
+          'secondary-accent': '#FF6D5F',
+          'text-main': '#FFFFFF',
+          'text-dark': '#0C1D2D',
+          'text-muted': '#A6ABB9',
+          border: '#E6E9F0',
         }
       },
       fontFamily: {

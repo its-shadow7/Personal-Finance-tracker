@@ -87,12 +87,12 @@ export default function Analytics() {
     <div className="w-full flex flex-col gap-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-           <h1 className="text-3xl font-heading font-bold text-theme-text-main tracking-tight">Advanced Analytics</h1>
+           <h1 className="text-3xl font-heading font-bold text-theme-text-dark pt-10 tracking-tight">Advanced Analytics</h1>
            <p className="text-theme-text-muted mt-1 text-sm font-medium">Deep insights into your financial velocity and habits.</p>
         </div>
         
         {trend && (
-            <div className={`flex items-center gap-2 px-4 py-2 rounded-full border shadow-sm ${trend.isUp ? 'bg-danger/5 border-danger/20 text-danger' : 'bg-success/5 border-success/20 text-success'}`}>
+            <div className={`flex items-center gap-2 px-4 py-2 rounded-full border shadow-sm ${trend.isUp ? 'bg-theme-secondary-accent/10 border-theme-secondary-accent/20 text-theme-secondary-accent' : 'bg-theme-primary-accent/10 border-theme-primary-accent/20 text-theme-primary-accent'}`}>
                 {trend.isUp ? <TrendingUp size={16}/> : <TrendingDown size={16}/>}
                 <span className="text-xs font-bold uppercase tracking-wider">
                     Spending {trend.label} {trend.value}%
@@ -103,15 +103,15 @@ export default function Analytics() {
       </div>
       
       {/* AI Insight Card */}
-      <div className="bg-surface border border-theme-border rounded-2xl shadow-sm overflow-hidden flex flex-col">
-          <div className="px-6 py-4 bg-theme-sidebar/30 border-b border-theme-border flex justify-between items-center">
+      <div className="bg-theme-bg-card border border-theme-border/10 rounded-2xl shadow-md overflow-hidden flex flex-col">
+          <div className="px-6 py-4 bg-black/20 border-b border-theme-border/10 flex justify-between items-center">
              <h3 className="font-heading font-bold text-theme-text-main flex items-center gap-2">
-                <Sparkles size={18} className="text-theme-primary" /> Gemini Intelligence
+                <Sparkles size={18} className="text-theme-primary-accent" /> Gemini Intelligence
              </h3>
              <button 
                 onClick={refreshInsights}
                 disabled={isGenerating}
-                className="flex items-center gap-2 text-xs font-semibold text-theme-primary hover:bg-theme-primary/10 px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50"
+                className="flex items-center gap-2 text-xs font-semibold text-theme-primary-accent hover:bg-theme-primary-accent/10 px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50"
              >
                 <RefreshCw size={14} className={isGenerating ? 'animate-spin' : ''} />
                 {isGenerating ? 'Analyzing...' : 'Refresh Insights'}
@@ -121,17 +121,16 @@ export default function Analytics() {
           <div className="p-8">
             {isGenerating ? (
                 <div className="space-y-4 animate-pulse">
-                    <div className="h-4 bg-theme-sidebar rounded w-3/4"></div>
-                    <div className="h-4 bg-theme-sidebar rounded w-5/6"></div>
-                    <div className="h-4 bg-theme-sidebar rounded w-2/3"></div>
+                    <div className="h-4 bg-theme-bg-main/10 rounded w-3/4"></div>
+                    <div className="h-4 bg-theme-bg-main/10 rounded w-5/6"></div>
+                    <div className="h-4 bg-theme-bg-main/10 rounded w-2/3"></div>
                 </div>
             ) : error ? (
-                <div className="flex items-center gap-3 text-danger bg-danger/5 p-4 rounded-xl border border-danger/20">
-                    <AlertCircle size={20} />
+                <div className="flex items-center gap-3 text-theme-secondary-accent bg-theme-secondary-accent/5 p-4 rounded-xl border border-theme-secondary-accent/20">
                     <span className="text-sm font-medium">{error}</span>
                 </div>
             ) : insightData ? (
-                <div className="prose prose-sm max-w-none text-theme-text-main leading-relaxed marker:text-theme-primary">
+                <div className="prose prose-sm max-w-none text-theme-text-main leading-relaxed marker:text-theme-primary-accent">
                     <ReactMarkdown>{insightData}</ReactMarkdown>
                 </div>
             ) : (
@@ -143,21 +142,21 @@ export default function Analytics() {
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-          <div className="bg-surface rounded-2xl border border-theme-border p-8 shadow-sm flex flex-col">
+          <div className="bg-theme-bg-card rounded-2xl border border-theme-border/10 p-8 shadow-md flex flex-col">
               <h2 className="text-lg font-heading font-bold text-theme-text-main mb-6">Income vs Expense Trend</h2>
               <div className="flex-1 min-h-[300px]">
                   <MonthlyBarChart />
               </div>
           </div>
           
-          <div className="bg-surface rounded-2xl border border-theme-border p-8 shadow-sm flex flex-col">
+          <div className="bg-theme-bg-card rounded-2xl border border-theme-border/10 p-8 shadow-md flex flex-col">
               <h2 className="text-lg font-heading font-bold text-theme-text-main mb-6">Spending Velocity</h2>
               <div className="flex-1 min-h-[300px]">
                   <VelocityLineChart />
               </div>
           </div>
 
-          <div className="bg-surface rounded-2xl border border-theme-border p-8 shadow-sm xl:col-span-2 flex flex-col">
+          <div className="bg-theme-bg-card rounded-2xl border border-theme-border/10 p-8 shadow-md xl:col-span-2 flex flex-col">
               <h2 className="text-lg font-heading font-bold text-theme-text-main mb-6 text-center">Expense Category Distribution</h2>
               <div className="min-h-[350px] w-full max-w-xl mx-auto">
                   <CategoryPieChart />

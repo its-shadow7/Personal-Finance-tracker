@@ -29,11 +29,11 @@ export default function VelocityLineChart() {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <LineChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
-        <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748B' }} dy={10} />
-        <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748B' }} tickFormatter={(val) => `$${val}`} />
-        <Tooltip cursor={{ stroke: '#E2E8F0', strokeWidth: 2 }} formatter={(value) => formatCurrency(value)} labelFormatter={(label) => `Day ${label}`} contentStyle={{ borderRadius: '8px', border: '1px solid #E2E8F0', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
-        <Line type="monotone" dataKey="spend" stroke="#4F46E5" strokeWidth={3} dot={false} activeDot={{ r: 6, fill: '#4F46E5', stroke: '#fff', strokeWidth: 2 }} />
+        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E6E9F0" strokeOpacity={0.1} />
+        <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#A6ABB9' }} dy={10} />
+        <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#A6ABB9' }} tickFormatter={(val) => `$${val}`} />
+        <Tooltip cursor={{ stroke: 'rgba(255,255,255,0.1)', strokeWidth: 2 }} formatter={(value) => formatCurrency(value)} labelFormatter={(label) => `Day ${label}`} contentStyle={{ backgroundColor: '#0C1D2D', borderRadius: '12px', border: '1px solid rgba(230, 233, 240, 0.1)', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.5)', color: '#FFFFFF' }} />
+        <Line type="monotone" dataKey="spend" stroke="#1F8D69" strokeWidth={3} dot={false} activeDot={{ r: 6, fill: '#1F8D69', stroke: '#fff', strokeWidth: 2 }} />
       </LineChart>
     </ResponsiveContainer>
   );

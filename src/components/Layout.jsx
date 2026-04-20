@@ -11,10 +11,10 @@ export default function Layout() {
   const { baseCurrency, setBaseCurrency, rates } = useCurrency();
 
   return (
-    <div className="min-h-screen bg-theme-bg pl-64 flex flex-col font-body text-theme-text-main">
+    <div className="min-h-screen bg-theme-bg-main pl-64 flex flex-col font-body text-theme-text-dark">
       <Sidebar />
       
-      <header className="h-16 bg-theme-bg/80 backdrop-blur border-b border-theme-border flex items-center justify-end px-8 sticky top-0 z-20 gap-4">
+      <header className="h-16 bg-theme-bg-card border-b border-theme-border flex items-center justify-end px-8 sticky top-0 z-20 gap-4 shadow-sm">
         
         {/* Base Currency Global Selector */}
         <div className="flex items-center gap-2 border border-theme-border bg-surface rounded-lg px-3 py-1.5 shadow-sm">
@@ -30,7 +30,7 @@ export default function Layout() {
 
         <button 
           onClick={() => setIsModalOpen(true)}
-          className="flex items-center gap-2 bg-theme-primary text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-all shadow-md transform active:scale-95"
+          className="flex items-center gap-2 bg-theme-primary-accent text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-all shadow-md transform active:scale-95"
         >
           <Plus size={18} /> Add Transaction
         </button>

@@ -44,25 +44,25 @@ export default function Budgets() {
 
   return (
     <div className="w-full flex flex-col gap-6 p-2">
-      <h1 className="text-2xl font-heading font-bold text-text-main mb-2">Custom Grouped Budgets</h1>
+      <h1 className="text-2xl font-heading font-bold text-theme-text-dark pt-10 mb-2">Custom Grouped Budgets</h1>
 
-      <div className="bg-surface rounded-lg border border-border p-6 shadow-sm mb-4">
-          <h2 className="text-lg font-heading font-semibold text-text-main mb-4">Create Budget Group</h2>
+      <div className="bg-theme-bg-card rounded-2xl border border-theme-border/10 p-6 shadow-md mb-4 text-theme-text-main">
+          <h2 className="text-lg font-heading font-semibold text-theme-text-main mb-4">Create Budget Group</h2>
           <form className="flex flex-col md:flex-row gap-4 items-end" onSubmit={handleCreate}>
               <div className="flex-1 w-full">
-                  <label className="block text-xs font-medium text-text-muted mb-1">Budget Name</label>
-                  <input type="text" value={bName} onChange={e => setBName(e.target.value)} placeholder="e.g. Discretionary, Weekend Survival" className="w-full text-sm border border-border rounded-md p-2 outline-none focus:border-primary bg-background" />
+                  <label className="block text-xs font-medium text-theme-text-muted mb-1">Budget Name</label>
+                  <input type="text" value={bName} onChange={e => setBName(e.target.value)} placeholder="e.g. Discretionary, Weekend Survival" className="w-full text-sm border border-theme-border/20 rounded-md p-2 outline-none focus:border-theme-primary-accent bg-theme-bg-main/10 text-theme-text-main" />
               </div>
               <div className="w-full md:w-32">
-                  <label className="block text-xs font-medium text-text-muted mb-1">Target ({baseCurrency})</label>
-                  <input type="number" value={bTarget} onChange={e => setBTarget(e.target.value)} placeholder="0.00" className="w-full text-sm border border-border font-mono rounded-md p-2 outline-none focus:border-primary bg-background" />
+                  <label className="block text-xs font-medium text-theme-text-muted mb-1">Target ({baseCurrency})</label>
+                  <input type="number" value={bTarget} onChange={e => setBTarget(e.target.value)} placeholder="0.00" className="w-full text-sm border border-theme-border/20 font-mono rounded-md p-2 outline-none focus:border-theme-primary-accent bg-theme-bg-main/10 text-theme-text-main" />
               </div>
               
               <div className="flex-1 w-full">
-                  <label className="block text-xs font-medium text-text-muted mb-1">Merged Categories ({bCats.length} selected)</label>
+                  <label className="block text-xs font-medium text-theme-text-muted mb-1">Merged Categories ({bCats.length} selected)</label>
                   <div className="flex flex-wrap gap-2 pt-1">
                       {categories.map(c => (
-                          <button key={c} type="button" onClick={() => toggleCat(c)} className={`text-xs px-2 py-1 rounded-md border transition-colors ${bCats.includes(c) ? 'bg-primary text-surface border-primary' : 'bg-background text-text-muted border-border hover:border-primary/50'}`}>
+                          <button key={c} type="button" onClick={() => toggleCat(c)} className={`text-xs px-2 py-1 rounded-md border transition-colors ${bCats.includes(c) ? 'bg-theme-primary-accent text-theme-text-main border-theme-primary-accent' : 'bg-theme-bg-main/10 text-theme-text-muted border-theme-border/20 hover:border-theme-primary-accent/50'}`}>
                               {c}
                           </button>
                       ))}
@@ -70,7 +70,7 @@ export default function Budgets() {
               </div>
 
               <div className="w-full md:w-auto mt-4 md:mt-0">
-                  <button type="submit" disabled={!bName || !bTarget || bCats.length === 0} className="w-full md:w-auto bg-primary text-surface px-4 py-2 rounded-md text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed h-[38px] flex items-center gap-2 justify-center">
+                  <button type="submit" disabled={!bName || !bTarget || bCats.length === 0} className="w-full md:w-auto bg-theme-primary-accent text-theme-text-main px-4 py-2 rounded-xl text-sm font-medium hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed h-[38px] flex items-center gap-2 justify-center">
                       <Plus size={16} /> Create
                   </button>
               </div>
@@ -79,32 +79,32 @@ export default function Budgets() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {budgetProgress.map(bp => (
-              <div key={bp.id} className="bg-surface rounded-lg border border-border p-6 shadow-sm relative group">
-                  <button onClick={() => deleteBudget(bp.id)} className="absolute top-4 right-4 text-text-muted hover:text-danger opacity-0 group-hover:opacity-100 transition-opacity">
+              <div key={bp.id} className="bg-theme-bg-card rounded-2xl border border-theme-border/10 p-6 shadow-md relative group text-theme-text-main">
+                  <button onClick={() => deleteBudget(bp.id)} className="absolute top-4 right-4 text-theme-text-muted hover:text-theme-secondary-accent opacity-0 group-hover:opacity-100 transition-opacity">
                       <Trash2 size={18} />
                   </button>
-                  <h3 className="font-heading font-medium text-lg text-text-main mb-1">{bp.name}</h3>
+                  <h3 className="font-heading font-medium text-lg text-theme-text-main mb-1">{bp.name}</h3>
                   <div className="flex gap-2 flex-wrap mb-6">
-                      {bp.includedCategories.map(c => <span key={c} className="text-[10px] uppercase font-bold tracking-wider text-text-muted bg-background px-2 py-0.5 rounded">{c}</span>)}
+                      {bp.includedCategories.map(c => <span key={c} className="text-[10px] uppercase font-bold tracking-wider text-theme-text-muted bg-theme-bg-main/5 px-2 py-0.5 rounded">{c}</span>)}
                   </div>
                   
                   <div className="flex justify-between items-end mb-2">
-                       <div className="font-mono text-2xl font-medium text-text-main">{formatCurrency(bp.spent)}</div>
-                       <div className="text-sm font-medium text-text-muted font-mono">{formatCurrency(bp.convertedTarget)} limit</div>
+                       <div className="font-mono text-2xl font-medium text-theme-text-main">{formatCurrency(bp.spent)}</div>
+                       <div className="text-sm font-medium text-theme-text-muted font-mono">{formatCurrency(bp.convertedTarget)} limit</div>
                   </div>
 
-                  <div className="h-3 w-full bg-background rounded-full overflow-hidden border border-border/50">
-                      <div className={`h-full transition-all duration-1000 rounded-full ${bp.isOver ? 'bg-danger' : 'bg-primary'}`} style={{ width: `${bp.percentage}%` }} />
+                  <div className="h-3 w-full bg-theme-bg-main/10 rounded-full overflow-hidden border border-theme-border/5">
+                      <div className={`h-full transition-all duration-1000 rounded-full ${bp.isOver ? 'bg-theme-secondary-accent' : 'bg-theme-primary-accent'}`} style={{ width: `${bp.percentage}%` }} />
                   </div>
                   
-                  {bp.isOver && <div className="text-xs text-danger font-medium mt-2">Over budget by {formatCurrency(bp.spent - bp.convertedTarget)}!</div>}
+                  {bp.isOver && <div className="text-xs text-theme-secondary-accent font-medium mt-2">Over budget by {formatCurrency(bp.spent - bp.convertedTarget)}!</div>}
               </div>
           ))}
 
           {budgetProgress.length === 0 && (
-             <div className="col-span-1 lg:col-span-2 text-center py-12 bg-surface rounded-lg border border-border border-dashed">
-                 <p className="text-text-muted font-medium">No custom budgets configured.</p>
-                 <p className="text-xs text-text-muted opacity-70 mt-1">Group overlapping categories into discrete trackable pools.</p>
+             <div className="col-span-1 lg:col-span-2 text-center py-12 bg-theme-bg-card rounded-2xl border border-theme-border/10 border-dashed">
+                 <p className="text-theme-text-muted font-medium">No custom budgets configured.</p>
+                 <p className="text-xs text-theme-text-muted opacity-70 mt-1">Group overlapping categories into discrete trackable pools.</p>
              </div>
           )}
       </div>
